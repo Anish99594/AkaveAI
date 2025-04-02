@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useAccount, useWalletClient } from 'wagmi';
+import { useAccount, useWalletClient } from 'wagmi'; // Replace useSigner with useWalletClient
 import { ethers } from 'ethers';
 import toast from 'react-hot-toast';
 import './UploadForm.css';
@@ -19,7 +19,62 @@ const CONTRACT_ABI = [
 		"stateMutability": "payable",
 		"type": "function"
 	},
-	// ABI shortened for brevity
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": false,
+				"internalType": "uint256",
+				"name": "id",
+				"type": "uint256"
+			},
+			{
+				"indexed": false,
+				"internalType": "string",
+				"name": "bucketName",
+				"type": "string"
+			},
+			{
+				"indexed": false,
+				"internalType": "string",
+				"name": "fileName",
+				"type": "string"
+			},
+			{
+				"indexed": false,
+				"internalType": "uint256",
+				"name": "price",
+				"type": "uint256"
+			},
+			{
+				"indexed": false,
+				"internalType": "address",
+				"name": "owner",
+				"type": "address"
+			}
+		],
+		"name": "DatasetListed",
+		"type": "event"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": false,
+				"internalType": "uint256",
+				"name": "id",
+				"type": "uint256"
+			},
+			{
+				"indexed": false,
+				"internalType": "address",
+				"name": "buyer",
+				"type": "address"
+			}
+		],
+		"name": "DatasetPurchased",
+		"type": "event"
+	},
 	{
 		"inputs": [
 			{
@@ -43,14 +98,218 @@ const CONTRACT_ABI = [
 		"stateMutability": "nonpayable",
 		"type": "function"
 	},
-	// Other contract functions
+	{
+		"inputs": [],
+		"name": "datasetCount",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"name": "datasets",
+		"outputs": [
+			{
+				"internalType": "string",
+				"name": "bucketName",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "fileName",
+				"type": "string"
+			},
+			{
+				"internalType": "uint256",
+				"name": "price",
+				"type": "uint256"
+			},
+			{
+				"internalType": "address",
+				"name": "owner",
+				"type": "address"
+			},
+			{
+				"internalType": "bool",
+				"name": "exists",
+				"type": "bool"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "_id",
+				"type": "uint256"
+			}
+		],
+		"name": "getDataset",
+		"outputs": [
+			{
+				"internalType": "string",
+				"name": "",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "",
+				"type": "string"
+			},
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			},
+			{
+				"internalType": "address",
+				"name": "",
+				"type": "address"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "_buyer",
+				"type": "address"
+			}
+		],
+		"name": "getPurchases",
+		"outputs": [
+			{
+				"internalType": "uint256[]",
+				"name": "",
+				"type": "uint256[]"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "_owner",
+				"type": "address"
+			}
+		],
+		"name": "getTotalEarnings",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "_owner",
+				"type": "address"
+			}
+		],
+		"name": "getTotalSales",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "",
+				"type": "address"
+			},
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"name": "purchases",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "",
+				"type": "address"
+			}
+		],
+		"name": "totalEarnings",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "",
+				"type": "address"
+			}
+		],
+		"name": "totalSales",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	}
 ];
 
 function UploadForm() {
   const [formData, setFormData] = useState({ name: '', description: '', price: '', file: null });
   const [isUploading, setIsUploading] = useState(false);
   const { address, isConnected } = useAccount();
-  const { data: walletClient } = useWalletClient();
+  const { data: walletClient } = useWalletClient(); // Use useWalletClient instead of useSigner
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -69,61 +328,58 @@ function UploadForm() {
   };
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    if (!isConnected) {
-      toast.error('Please connect your wallet first');
-      return;
-    }
-    if (!walletClient) {
-      toast.error('Wallet client not available');
-      return;
-    }
-    setIsUploading(true);
+	e.preventDefault();
+	if (!isConnected) {
+	  toast.error('Please connect your wallet first');
+	  return;
+	}
+	if (!walletClient) {
+	  toast.error('Wallet client not available');
+	  return;
+	}
+	setIsUploading(true);
   
-    const form = new FormData();
-    form.append('name', formData.name);
-    form.append('description', formData.description);
-    form.append('price', formData.price);
-    form.append('file', formData.file);
+	const form = new FormData();
+	form.append('name', formData.name);
+	form.append('description', formData.description);
+	form.append('price', formData.price);
+	form.append('file', formData.file);
   
-    try {
-      const uploadRes = await fetch('https://akaveai.onrender.com/api/upload', {
-        method: 'POST',
-        headers: { 'x-wallet-address': address },
-        body: form,
-      });
-      
-      if (!uploadRes.ok) {
-        const errorData = await uploadRes.json();
-        throw new Error(errorData.message || 'Upload failed');
-      }
-      
-      const uploadData = await uploadRes.json();
+	try {
+	  const uploadRes = await fetch('https://akaveai.onrender.com/api/upload', {
+		method: 'POST',
+		headers: { 'x-wallet-address': address },
+		body: form,
+	  });
+	  if (!uploadRes.ok) {
+		const errorData = await uploadRes.json();
+		throw new Error(errorData.message || 'Upload failed');
+	  }
+	  const uploadData = await uploadRes.json();
+
       const { tempId, bucketName, fileName } = uploadData;
 
-      // List dataset on the smart contract
+      // 2. List dataset on the smart contract
       const provider = new ethers.providers.Web3Provider(walletClient);
       const signer = provider.getSigner();
       const contract = new ethers.Contract(CONTRACT_ADDRESS, CONTRACT_ABI, signer);
       const priceWei = ethers.utils.parseEther(formData.price.toString());
-      
       const tx = await contract.listDataset(bucketName, fileName, priceWei);
       const receipt = await tx.wait();
 
-      // Extract dataset ID from event
+      // Extract dataset ID from the DatasetListed event
       const event = receipt.events.find((e) => e.event === 'DatasetListed');
       const datasetId = event.args.id.toNumber();
 
-      // Update backend with contract dataset ID
+      // 3. Update backend with contract dataset ID
       const updateRes = await fetch('https://akaveai.onrender.com/api/updateDatasetContractId', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ tempId, contractId: datasetId }),
       });
-      
       if (!updateRes.ok) throw new Error('Failed to update dataset ID');
 
-      toast.success('Dataset listed successfully!');
+      toast.success('AIAgent listed successfully!');
       setFormData({ name: '', description: '', price: '', file: null });
       document.getElementById('file-upload').value = '';
     } catch (error) {
@@ -136,17 +392,16 @@ function UploadForm() {
 
   return (
     <div className="upload-form">
-      <h2 className="section-title">Upload Your AIAgent</h2>
+      <h2 className="section-title">Upload Your Dataset</h2>
       <form onSubmit={handleSubmit}>
         <div className="form-group">
-          <label htmlFor="name">AIAgent Name</label>
+          <label htmlFor="name">AIAgent name</label>
           <input
             type="text"
             id="name"
             name="name"
             value={formData.name}
             onChange={handleChange}
-            placeholder="Enter a descriptive name for your AIAgent"
             required
           />
         </div>
@@ -158,7 +413,6 @@ function UploadForm() {
             value={formData.description}
             onChange={handleChange}
             rows="4"
-            placeholder="Describe what's in your AIAgent, its source, and potential uses"
             required
           ></textarea>
         </div>
@@ -172,12 +426,11 @@ function UploadForm() {
             step="0.01"
             value={formData.price}
             onChange={handleChange}
-            placeholder="Set your price in tFIL"
             required
           />
         </div>
         <div className="form-group">
-          <label htmlFor="file-upload">Dataset File (ZIP only)</label>
+          <label htmlFor="file-upload">AIAgent File (ZIP only)</label>
           <input
             type="file"
             id="file-upload"
@@ -185,10 +438,10 @@ function UploadForm() {
             onChange={handleFileChange}
             required
           />
-          <small>Please upload your AIAgent as a compressed .zip file (Max size: 50MB)</small>
+          <small>Please upload your AIAgent as a compressed .zip file</small>
         </div>
         <button type="submit" className="btn btn-primary" disabled={isUploading}>
-          {isUploading ? 'Processing...' : 'Upload AIAgent'}
+          {isUploading ? 'Uploading...' : 'Upload Dataset'}
         </button>
       </form>
     </div>
