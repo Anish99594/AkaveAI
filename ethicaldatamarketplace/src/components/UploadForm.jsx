@@ -87,7 +87,7 @@ function UploadForm() {
     form.append('file', formData.file);
   
     try {
-      const uploadRes = await fetch('http://localhost:3001/api/upload', {
+      const uploadRes = await fetch('https://akaveai.onrender.com/api/upload', {
         method: 'POST',
         headers: { 'x-wallet-address': address },
         body: form,
