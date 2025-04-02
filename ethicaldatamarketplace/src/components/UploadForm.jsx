@@ -115,7 +115,7 @@ function UploadForm() {
       const datasetId = event.args.id.toNumber();
 
       // Update backend with contract dataset ID
-      const updateRes = await fetch('http://localhost:3001/api/updateDatasetContractId', {
+      const updateRes = await fetch('https://akaveai.onrender.com/api/updateDatasetContractId', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ tempId, contractId: datasetId }),

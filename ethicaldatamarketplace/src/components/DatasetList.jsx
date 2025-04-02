@@ -29,7 +29,7 @@ function DatasetList() {
     const fetchDatasets = async () => {
       try {
         setIsLoading(true);
-        const res = await fetch('http://localhost:3001/api/datasets');
+        const res = await fetch('https://akaveai.onrender.com/api/datasets');
         const data = await res.json();
         setDatasets(data);
       } catch (error) {
@@ -77,7 +77,7 @@ function DatasetList() {
       await tx.wait();
   
       // Fetch encrypted data
-      const res = await fetch('http://localhost:3001/api/buy', {
+      const res = await fetch('https://akaveai.onrender.com/api/buy', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
