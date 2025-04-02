@@ -1,0 +1,24 @@
+services:
+  - type: web
+    name: ethicaldatamarketplace-backend
+    env: node
+    plan: free
+    buildCommand: "curl -fsSL https://golang.org/dl/go1.23.5.linux-amd64.tar.gz | tar -C /usr/local -xz && npm install"
+    startCommand: "npm start"
+    envVars:
+      - key: PATH
+        value: "/usr/local/go/bin:/usr/local/bin:/usr/bin:/bin"
+      - key: AKAVE_NODE_ADDRESS
+        value: "connect.akave.ai:5500"
+      - key: AKAVE_PRIVATE_KEY
+        value: "3c65adb0e760751d4a36c101c6e2f223e62fc2bd1d56dd3e95d9e0654e06e8d0"
+      - key: MONGO_URI
+        value: "mongodb+srv://root:root@cluster0.bjm6l.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
+      - key: FVM_RPC_URL
+        value: "https://api.calibration.node.glif.io/rpc/v1"
+      - key: CONTRACT_ADDRESS
+        value: "0x4B9Cddd5a77496994ecc4C2EB99FFdEDA5617A0d"
+      - key: WALLET_PRIVATE_KEY
+        value: "3c65adb0e760751d4a36c101c6e2f223e62fc2bd1d56dd3e95d9e0654e06e8d0"
+      - key: PORT
+        value: "3001"
