@@ -7,36 +7,321 @@ import './DatasetList.css';
 
 const CONTRACT_ADDRESS = '0xe66f3fc56808251Ca578dD839bd809Ed45C51fc7';
 const CONTRACT_ABI = [
-  // ABI shortened for brevity
-  {
-    "inputs": [{"internalType": "uint256", "name": "_id", "type": "uint256"}],
-    "name": "buyDataset",
-    "outputs": [],
-    "stateMutability": "payable",
-    "type": "function"
-  },
-  // Other contract functions
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "_id",
+				"type": "uint256"
+			}
+		],
+		"name": "buyDataset",
+		"outputs": [],
+		"stateMutability": "payable",
+		"type": "function"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": false,
+				"internalType": "uint256",
+				"name": "id",
+				"type": "uint256"
+			},
+			{
+				"indexed": false,
+				"internalType": "string",
+				"name": "bucketName",
+				"type": "string"
+			},
+			{
+				"indexed": false,
+				"internalType": "string",
+				"name": "fileName",
+				"type": "string"
+			},
+			{
+				"indexed": false,
+				"internalType": "uint256",
+				"name": "price",
+				"type": "uint256"
+			},
+			{
+				"indexed": false,
+				"internalType": "address",
+				"name": "owner",
+				"type": "address"
+			}
+		],
+		"name": "DatasetListed",
+		"type": "event"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": false,
+				"internalType": "uint256",
+				"name": "id",
+				"type": "uint256"
+			},
+			{
+				"indexed": false,
+				"internalType": "address",
+				"name": "buyer",
+				"type": "address"
+			}
+		],
+		"name": "DatasetPurchased",
+		"type": "event"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "string",
+				"name": "_bucketName",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "_fileName",
+				"type": "string"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_price",
+				"type": "uint256"
+			}
+		],
+		"name": "listDataset",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "datasetCount",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"name": "datasets",
+		"outputs": [
+			{
+				"internalType": "string",
+				"name": "bucketName",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "fileName",
+				"type": "string"
+			},
+			{
+				"internalType": "uint256",
+				"name": "price",
+				"type": "uint256"
+			},
+			{
+				"internalType": "address",
+				"name": "owner",
+				"type": "address"
+			},
+			{
+				"internalType": "bool",
+				"name": "exists",
+				"type": "bool"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "_id",
+				"type": "uint256"
+			}
+		],
+		"name": "getDataset",
+		"outputs": [
+			{
+				"internalType": "string",
+				"name": "",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "",
+				"type": "string"
+			},
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			},
+			{
+				"internalType": "address",
+				"name": "",
+				"type": "address"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "_buyer",
+				"type": "address"
+			}
+		],
+		"name": "getPurchases",
+		"outputs": [
+			{
+				"internalType": "uint256[]",
+				"name": "",
+				"type": "uint256[]"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "_owner",
+				"type": "address"
+			}
+		],
+		"name": "getTotalEarnings",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "_owner",
+				"type": "address"
+			}
+		],
+		"name": "getTotalSales",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "",
+				"type": "address"
+			},
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"name": "purchases",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "",
+				"type": "address"
+			}
+		],
+		"name": "totalEarnings",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "",
+				"type": "address"
+			}
+		],
+		"name": "totalSales",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	}
 ];
 
 function DatasetList() {
   const [datasets, setDatasets] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
   const [purchasingId, setPurchasingId] = useState(null);
   const { address, isConnected } = useAccount();
   const { data: walletClient } = useWalletClient();
 
+  
+
   useEffect(() => {
     const fetchDatasets = async () => {
       try {
-        setIsLoading(true);
         const res = await fetch('https://akaveai.onrender.com/api/datasets');
         const data = await res.json();
         setDatasets(data);
       } catch (error) {
         console.error('Failed to fetch datasets:', error);
-        toast.error('Failed to load datasets');
-      } finally {
-        setIsLoading(false);
       }
     };
     fetchDatasets();
@@ -54,7 +339,16 @@ function DatasetList() {
       const signer = provider.getSigner();
       const contract = new ethers.Contract(CONTRACT_ADDRESS, CONTRACT_ABI, signer);
   
-      // Get dataset from contract
+      // Log wallet balance and dataset details
+      const balance = await provider.getBalance(address);
+      console.log('Wallet balance:', ethers.utils.formatEther(balance), 'tFIL');
+      console.log('Purchasing dataset:', { mongoId, contractId, name, price });
+  
+      // Check datasetCount
+      const count = await contract.datasetCount();
+      console.log('Current datasetCount:', count.toString());
+  
+      // Check dataset exists
       const dataset = await contract.getDataset(contractId);
       console.log('Dataset from contract:', {
         bucketName: dataset[0],
@@ -71,10 +365,20 @@ function DatasetList() {
   
       // Purchase on blockchain
       const priceWei = ethers.utils.parseEther(price.toString());
+      console.log('Sending transaction with value:', ethers.utils.formatEther(priceWei), 'tFIL');
+  
+      try {
+        const gasEstimate = await contract.estimateGas.buyDataset(contractId, { value: priceWei });
+        console.log('Gas estimate:', gasEstimate.toString());
+      } catch (gasError) {
+        console.error('Gas estimation failed:', gasError);
+        throw gasError;
+      }
+  
       const tx = await contract.buyDataset(contractId, { value: priceWei });
-      toast.success('Transaction submitted! Processing purchase...');
-      
+      console.log('Transaction submitted:', tx.hash);
       await tx.wait();
+      console.log('Purchase transaction completed:', tx.hash);
   
       // Fetch encrypted data
       const res = await fetch('https://akaveai.onrender.com/api/buy', {
@@ -85,7 +389,6 @@ function DatasetList() {
         },
         body: JSON.stringify({ datasetId: mongoId }),
       });
-      
       const data = await res.json();
       if (!res.ok) throw new Error(data.message || 'Failed to retrieve dataset');
   
@@ -101,7 +404,6 @@ function DatasetList() {
       for (let i = 0; i < byteCharacters.length; i++) {
         byteNumbers[i] = byteCharacters.charCodeAt(i);
       }
-      
       const blob = new Blob([byteNumbers], { type: 'application/zip' });
       const url = window.URL.createObjectURL(blob);
       const link = document.createElement('a');
@@ -115,58 +417,46 @@ function DatasetList() {
       toast.success(`Purchased and downloaded "${name}"!`);
     } catch (error) {
       console.error('Purchase error:', error);
+      if (error.data) {
+        try {
+          const revertReason = ethers.utils.toUtf8String(error.data.data || '0x');
+          console.error('Revert reason:', revertReason);
+        } catch (e) {
+          console.error('No readable revert reason, raw data:', error.data.data);
+        }
+      } else if (error.reason) {
+        console.error('Revert reason:', error.reason);
+      }
       toast.error(error.message || 'Purchase failed');
     } finally {
       setPurchasingId(null);
     }
   };
 
-  if (isLoading) {
-    return (
-      <div className="dataset-list">
-        <h2 className="section-title">Available Datasets</h2>
-        <div className="loading-message">Loading available datasets...</div>
-      </div>
-    );
-  }
-
   return (
     <div className="dataset-list">
       <h2 className="section-title">Available Datasets</h2>
-      
-      {datasets.length === 0 ? (
-        <div className="empty-state">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
-            <polyline points="17 8 12 3 7 8"></polyline>
-            <line x1="12" y1="3" x2="12" y2="15"></line>
-          </svg>
-          <h3>No datasets available yet</h3>
-          <p>Be the first to upload a dataset to the marketplace!</p>
-        </div>
-      ) : (
-        <div className="dataset-grid">
-          {datasets.map((dataset) => (
-            <div key={dataset._id} className="dataset-card">
-              <h3 className="dataset-name">{dataset.name}</h3>
-              <div className="dataset-seller">by {dataset.owner.slice(0, 6)}...{dataset.owner.slice(-4)}</div>
-              <p className="dataset-description">{dataset.description}</p>
-              <div className="dataset-footer">
-                <div className="dataset-price">{dataset.price} tFIL</div>
-                <button
-                  className="btn btn-secondary"
-                  onClick={() =>
-                    handlePurchase(dataset._id, dataset.contractId, dataset.name, dataset.price)
-                  }
-                  disabled={purchasingId === dataset._id || !isConnected || !dataset.contractId}
-                >
-                  {purchasingId === dataset._id ? 'Processing...' : 'Buy Now'}
-                </button>
-              </div>
+      <div className="dataset-grid">
+        {datasets.map((dataset) => (
+          <div key={dataset._id} className="dataset-card">
+            <h3 className="dataset-name">{dataset.name}</h3>
+            <div className="dataset-seller">by {dataset.owner.slice(0, 6)}...</div>
+            <p className="dataset-description">{dataset.description}</p>
+            <div className="dataset-footer">
+              <div className="dataset-price">{dataset.price} tFIL</div>
+              <button
+                className="btn btn-secondary"
+                onClick={() =>
+                  handlePurchase(dataset._id, dataset.contractId, dataset.name, dataset.price)
+                }
+                disabled={purchasingId === dataset._id || !isConnected || !dataset.contractId}
+              >
+                {purchasingId === dataset._id ? 'Processing...' : 'Buy Now'}
+              </button>
             </div>
-          ))}
-        </div>
-      )}
+          </div>
+        ))}
+      </div>
     </div>
   );
 }
