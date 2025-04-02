@@ -392,7 +392,7 @@ function UploadForm() {
 
   return (
     <div className="upload-form">
-      <h2 className="section-title">Upload Your Dataset</h2>
+      <h2 className="section-title">Upload Your AIAgent</h2>
       <form onSubmit={handleSubmit}>
         <div className="form-group">
           <label htmlFor="name">AIAgent name</label>
